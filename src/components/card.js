@@ -18,7 +18,7 @@ export function createCard (initialCard, funcDel, funcLike, funcOpenImgModal) {
 }
 // @todo: Функция удаления карточки
 
-export function resetCard(e) {
+export function deleteCard(e) {
   const delCard = e.target.closest('.card');
   delCard.remove();
 }
