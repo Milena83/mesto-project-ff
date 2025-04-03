@@ -68,20 +68,14 @@ function handleEditFormSubmit(evt) {
 
 function handleAddFormSubmit(evt) {
   evt.preventDefault(); 
-  const newCard = {};
-  newCard.name = addModal.querySelector('.popup__input_type_card-name').value;
-  newCard.link = addModal.querySelector('.popup__input_type_url').value;
-  return newCard
+  const card = {};
+  card.name = addModal.querySelector('.popup__input_type_card-name').value;
+  card.link = addModal.querySelector('.popup__input_type_url').value;
+  const newCard = createCard(card, deleteCard, handlerLike, openModalImg);
+  listCards.prepend(newCard);
+  formElementAdd.reset();
+  closeModal(addModal);
 }
 
 formElementEdit.addEventListener('submit', handleEditFormSubmit);
-formElementAdd.addEventListener('submit', (el) => {
-  const answer = handleAddFormSubmit(el)
-  if(answer) {
-    const newCard = createCard(answer, deleteCard, handlerLike, openModalImg);
-    listCards.prepend(newCard);
-    addModal.querySelector('.popup__input_type_card-name').value = '';
-    addModal.querySelector('.popup__input_type_url').value = '';
-    closeModal(addModal);
-  }
-});
+formElementAdd.addEventListener('submit', handleAddFormSubmit);
