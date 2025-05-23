@@ -17,6 +17,8 @@ const addButton = content.querySelector('.profile__add-button');
 const allModals = document.querySelectorAll('.popup');
 const editModal = document.querySelector('.popup_type_edit');
 const addModal = document.querySelector('.popup_type_new-card');
+const cardNameInput = addModal.querySelector('.popup__input_type_card-name');
+const cardImageUrlInput = addModal.querySelector('.popup__input_type_url');
 const editUserPhotoModal = document.querySelector('.popup_type_edit-user-photo');
 const allCloseButtons = document.querySelectorAll('.popup__close');
 const profileTitle = document.querySelector('.profile__title');
@@ -38,6 +40,9 @@ const validationConfig = {
   errorClass: 'popup__error_visible'
 };
 let userId;
+const imgModal = document.querySelector('.popup_type_image');
+const imgItem = imgModal.querySelector('.popup__image');
+const descImg = imgModal.querySelector('.popup__caption');
 
 Promise.all([getUserInfo(), getCards()])
   .then(([user, cards]) => {
@@ -91,20 +96,18 @@ function handleEditPhotoFormSubmit(evt) {
     .then((user) => {
       profileImage.style.backgroundImage = `url(${user.avatar})`;
       urlPhotoInput.value = '';
-      evt.submitter.textContent = "Сохранить";
       closeModal(editUserPhotoModal);
     })
     .catch((error) => {
       console.log(error);
     })
+    .finally(() => {
+      evt.submitter.textContent = "Сохранить";
+    })
 }
 
 
 function openModalImg(src, alt) {
-  const imgModal = document.querySelector('.popup_type_image');
-  const imgItem = imgModal.querySelector('.popup__image');
-  const descImg = imgModal.querySelector('.popup__caption');
-
   openModal(imgModal);
   imgItem.src = src;
   imgItem.alt = alt; 
@@ -119,11 +122,13 @@ function handleEditFormSubmit(evt) {
   .then((user) => {
     profileTitle.textContent = user.name;
     profileDesc.textContent = user.about;
-    evt.submitter.textContent = "Сохранить";
     closeModal(editModal)
   })
   .catch((error) => {
     console.log(error);
+  })
+  .finally(() => {
+    evt.submitter.textContent = "Сохранить";
   })
 }
 
@@ -131,8 +136,8 @@ function handleAddFormSubmit(evt) {
   evt.preventDefault(); 
   evt.submitter.textContent = "Сохранение...";
   const card = {};
-  card.name = addModal.querySelector('.popup__input_type_card-name').value;
-  card.link = addModal.querySelector('.popup__input_type_url').value;
+  card.name = cardNameInput.value;
+  card.link = cardImageUrlInput.value;
   addNewCard(card.name, card.link)
   .then((card) => {
     const newCard = createCard(card, deleteCard, handlerLike, openModalImg, userId);
@@ -142,6 +147,9 @@ function handleAddFormSubmit(evt) {
   })
   .catch((error) => {
     console.log(error);
+  })
+  .finally(() => {
+    evt.submitter.textContent = "Сохранить";
   })
 }
 
